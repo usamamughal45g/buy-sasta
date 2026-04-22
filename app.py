@@ -1,55 +1,91 @@
 import streamlit as st
-from PIL import Image
-import time
 
-st.set_page_config(page_title="Buy Sasta - AI Image & Price Search", page_icon="📸", layout="wide")
+st.set_page_config(page_title="Buy Sasta - Smart Deals", page_icon="🏷️", layout="wide")
 
-# Custom UI Styling
+# Custom CSS for BuyHatke style with Red & Green Theme
 st.markdown("""
     <style>
-    .main { background-color: #f0f2f6; }
-    .comparison-card {
-        background-color: white;
+    /* Main Background */
+    .stApp {
+        background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+        color: white;
+    }
+    /* Search Bar Design */
+    .stTextInput input {
+        border-radius: 30px !important;
+        padding: 15px 25px !important;
+        border: none !important;
+        font-size: 18px !important;
+    }
+    /* Hot Deals Section */
+    .deal-card {
+        background: white;
+        color: #333;
         padding: 20px;
         border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         text-align: center;
+        border-bottom: 5px solid #2ecc71; /* Green Bottom Border */
         margin-bottom: 20px;
     }
-    .price-tag { color: #d32f2f; font-size: 24px; font-weight: bold; }
+    .price-text {
+        color: #e74c3c; /* Red Price */
+        font-size: 22px;
+        font-weight: bold;
+    }
+    .best-deal-tag {
+        background: #27ae60;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+    h1, h2, h3 { color: white !important; }
     </style>
     """, unsafe_allow_html=True)
 
-st.markdown("<h1 style='text-align: center; color: #1E88E5;'>📸 Buy Sasta AI Search</h1>", unsafe_allow_html=True)
+# Header Section
+st.markdown("<h1 style='text-align: center;'>🏷️ Buy Sasta</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>Magic Trick for Online Shopping</h3>", unsafe_allow_html=True)
 
-tab1, tab2 = st.tabs(["🔍 Search by Name", "📷 Search by Image"])
+# Center Search Bar
+col1, col2, col3 = st.columns([1,2,1])
+with col2:
+    query = st.text_input("", placeholder="Paste a Flipkart / Amazon link or search product...")
 
-with tab1:
-    query = st.text_input("Kya dhoond rahe hain?", placeholder="e.g. Blue Denim Jacket")
-    if query:
-        st.subheader(f"Results for: {query}")
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown(f'<div class="comparison-card"><h3>Meesho</h3><p class="price-tag">₹349</p></div>', unsafe_allow_html=True)
-            st.link_button("Buy on Meesho", f"https://www.meesho.com/search?q={query}")
-        with col2:
-            st.markdown(f'<div class="comparison-card"><h3>Flipkart</h3><p class="price-tag">₹599</p></div>', unsafe_allow_html=True)
-            st.link_button("View on Flipkart", f"https://www.flipkart.com/search?q={query}")
-        with col3:
-            st.markdown(f'<div class="comparison-card"><h3>Amazon</h3><p class="price-tag">₹649</p></div>', unsafe_allow_html=True)
-            st.link_button("Check on Amazon", f"https://www.amazon.in/s?k={query}")
+if query:
+    st.markdown(f"## 🚀 Real Deals for '{query}'")
+    
+    # Comparison Grid
+    c1, c2, c3 = st.columns(3)
+    
+    with c1:
+        st.markdown(f'''<div class="deal-card">
+            <h4>Amazon</h4>
+            <p class="price-text">₹ Check Live</p>
+            <span class="best-deal-tag">Fast Delivery</span>
+        </div>''', unsafe_allow_html=True)
+        st.link_button("Grab Deal", f"https://www.amazon.in/s?k={query}")
 
-with tab2:
-    st.write("### 📸 Photo Se Search Karein")
-    uploaded_file = st.file_uploader("Product ki photo upload karein", type=["jpg", "jpeg", "png"])
-    if uploaded_file:
-        img = Image.open(uploaded_file)
-        st.image(img, width=300)
-        with st.spinner('AI analysis chal raha hai...'):
-            time.sleep(2)
-            st.success("AI ne product pehchan liya!")
-            st.info("Niche diye buttons se similar products dekhein:")
-            st.link_button("Similar on Google Lens", "https://images.google.com")
+    with c2:
+        st.markdown(f'''<div class="deal-card" style="border-bottom: 5px solid #ff4b2b;">
+            <h4>Flipkart</h4>
+            <p class="price-text" style="color:#27ae60;">₹ Best Price</p>
+            <span class="best-deal-tag" style="background:#ff4b2b;">Top Choice</span>
+        </div>''', unsafe_allow_html=True)
+        st.link_button("Grab Deal", f"https://www.flipkart.com/search?q={query}")
 
-st.sidebar.title("🚀 Business Mode")
-st.sidebar.write("App is Running perfectly!")
+    with c3:
+        st.markdown(f'''<div class="deal-card">
+            <h4>Meesho</h4>
+            <p class="price-text">₹ Lowest</p>
+            <span class="best-deal-tag">Budget Friendly</span>
+        </div>''', unsafe_allow_html=True)
+        st.link_button("Grab Deal", f"https://www.meesho.com/search?q={query}")
+
+else:
+    # Hot Deals / Welcome Section
+    st.markdown("<br><br><h2 style='text-align: center;'>✨ Hot Deals Under ₹999</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;'>Powered by Smart Deal Scanner</p>", unsafe_allow_html=True)
+
+st.sidebar.title("💰 Earn Money")
+st.sidebar.info("Tip: EarnKaro par id banakar apne links yahan lagayein!")
