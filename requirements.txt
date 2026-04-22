@@ -1,3 +1,4 @@
 streamlit
 Pillow
-requests
+scikit-learn
+numpy
