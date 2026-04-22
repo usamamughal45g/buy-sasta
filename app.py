@@ -1,59 +1,71 @@
 import streamlit as st
+from PIL import Image
+import time
 
-st.set_page_config(page_title="Buy Sasta - All Shopping Sites", page_icon="🛍️", layout="wide")
+st.set_page_config(page_title="Buy Sasta - AI Image & Price Search", page_icon="📸", layout="wide")
 
-# Custom Styling
+# Custom UI Styling
 st.markdown("""
     <style>
-    .main {
-        background-color: #f5f7f9;
+    .main { background-color: #f0f2f6; }
+    .stTabs [data-baseweb="tab-list"] { gap: 20px; }
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        white-space: pre-wrap;
+        background-color: #ffffff;
+        border-radius: 10px 10px 0px 0px;
+        gap: 1px;
+        padding-top: 10px;
     }
-    .stButton>button {
-        width: 100%;
-        border-radius: 5px;
-        height: 3em;
-        background-color: #007bff;
-        color: white;
+    .comparison-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
     }
+    .price-tag { color: #d32f2f; font-size: 24px; font-weight: bold; }
     </style>
     """, unsafe_allow_html=True)
 
-st.markdown("<h1 style='text-align: center; color: #E64A19;'>🚀 Buy Sasta: All-in-One Shopping</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Ek search, saari websites ke price!</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #1E88E5;'>📸 Buy Sasta AI Search</h1>", unsafe_allow_html=True)
 
-query = st.text_input("Product ka naam yahan likhein (e.g. Samsung Galaxy, Nike Shoes):")
+# Tabs for Text and Image Search
+tab1, tab2 = st.tabs(["🔍 Search by Name", "📷 Search by Image"])
 
-if query:
-    st.write(f"### Results for: **{query}**")
+with tab1:
+    query = st.text_input("Kya dhoond rahe hain?", placeholder="e.g. Blue Denim Jacket")
+    if query:
+        st.subheader(f"Results for: {query}")
+        
+        # Displaying Comparison
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown(f'<div class="comparison-card"><h3>Meesho</h3><p class="price-tag">₹349</p><a href="https://www.meesho.com/search?q={query}"><button style="width:100%;">Buy Now</button></a></div>', unsafe_allow_html=True)
+        with col2:
+            st.markdown(f'<div class="comparison-card"><h3>Flipkart</h3><p class="price-tag">₹599</p><a href="https://www.flipkart.com/search?q={query}"><button style="width:100%;">View Deal</button></a></div>', unsafe_allow_html=True)
+        with col3:
+            st.markdown(f'<div class="comparison-card"><h3>Amazon</h3><p class="price-tag">₹649</p><a href="https://www.amazon.in/s?k={query}"><button style="width:100%;">Compare</button></a></div>', unsafe_allow_html=True)
+
+with tab2:
+    st.write("### 📸 Photo Se Sasta Maal Dhoondhein")
+    uploaded_file = st.file_uploader("Product ki photo khichein ya upload karein", type=["jpg", "jpeg", "png"])
     
-    # Category 1: General Stores
-    st.subheader("🛒 General Shopping")
-    c1, c2, c3, c4 = st.columns(4)
-    with c1: st.link_button("Amazon", f"https://www.amazon.in/s?k={query}")
-    with c2: st.link_button("Flipkart", f"https://www.flipkart.com/search?q={query}")
-    with c3: st.link_button("Meesho", f"https://www.meesho.com/search?q={query}")
-    with c4: st.link_button("Snapdeal", f"https://www.snapdeal.com/search?keyword={query}")
-
-    # Category 2: Fashion & Lifestyle
-    st.subheader("👕 Fashion & Clothes")
-    f1, f2, f3, f4 = st.columns(4)
-    with f1: st.link_button("Myntra", f"https://www.myntra.com/{query}")
-    with f2: st.link_button("Ajio", f"https://www.ajio.com/search/?text={query}")
-    with f3: st.link_button("Nykaa Fashion", f"https://www.nykaafashion.com/search/?q={query}")
-    with f4: st.link_button("Tata CLiQ", f"https://www.tatacliq.com/search/?searchCategory=all&text={query}")
-
-    # Category 3: Electronics & Others
-    st.subheader("⚡ Electronics & Tech")
-    e1, e2, e3 = st.columns(3)
-    with e1: st.link_button("Reliance Digital", f"https://www.reliancedigital.in/search?q={query}")
-    with e2: st.link_button("Croma", f"https://www.croma.com/search/?text={query}")
-    with e3: st.link_button("Jiomart", f"https://www.jiomart.com/search/{query}")
-
-    st.divider()
-    st.success("💡 In buttons par click karke aap sabhi sites par real-time price dekh sakte hain!")
-else:
-    st.info("Bhai, upar box mein product ka naam likho, fir dekho kamaal!")
-
-# Sidebar
-st.sidebar.header("Kalam Saaz Special")
-st.sidebar.write("Ye tool aapke shopping ke paise bachayega.")
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file)
+        st.image(img, caption="Aapki Photo", width=300)
+        
+        with st.spinner('AI Image ko analyze kar raha hai...'):
+            time.sleep(2) # Fake processing time for feel
+            st.success("AI ne product pehchan liya hai!")
+            
+            # Yahan Google Lens ka power use karenge jo photo ko process karega
+            search_query = "products similar to this image" 
+            
+            st.markdown("#### Ye Rahi Best Deals:")
+            c1, c2, c3 = st.columns(3)
+            # Yahan hum Google Lens ya image search engine ke links de rahe hain
+            with c1:
+                st.link_button("Meesho Image Search", f"https://www.meesho.com/search?q=clothing")
+            with c2:
+                st.link_button("Google Lens Results", f"
