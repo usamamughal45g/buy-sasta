@@ -1,109 +1,109 @@
 import streamlit as st
 from PIL import Image
 
-st.set_page_config(page_title="Buy Sasta - Smart Comparison", page_icon="🛍️", layout="wide")
+# Page Setup
+st.set_page_config(page_title="Buy Sasta - Smart Deal Scanner", page_icon="🛍️", layout="wide")
 
-# Custom CSS for BuyHatke Style Design
+# Custom CSS to match BuyHatke EXACT layout
 st.markdown("""
     <style>
-    /* Main Background and Font */
+    /* Main App Background */
     .stApp {
-        background-color: #0f172a; /* Dark sleek background */
-        font-family: 'Inter', sans-serif;
+        background-color: #ffffff;
     }
     
-    /* Top Banner like BuyHatke */
-    .hero-section {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        padding: 60px 20px;
+    /* Top Purple/Blue Banner (BuyHatke Style) */
+    .hero-banner {
+        background: linear-gradient(135deg, #2d1b69 0%, #1a1a3d 100%);
+        padding: 80px 20px;
         text-align: center;
-        border-radius: 0 0 40px 40px;
-        margin-bottom: 40px;
+        color: white;
+        border-radius: 0 0 30px 30px;
+        margin-bottom: -50px; /* Overlap for search bar */
     }
     
-    .hero-title {
-        color: #f8fafc;
-        font-size: 42px;
-        font-weight: 800;
-        margin-bottom: 10px;
-    }
-    
-    .hero-subtitle {
-        color: #94a3b8;
-        font-size: 18px;
-    }
+    .hero-banner h1 { font-size: 36px; font-weight: 700; color: white !important; }
+    .hero-banner p { font-size: 18px; color: #b0b0d0 !important; }
 
-    /* BuyHatke Style Search Bar */
+    /* Centered Search Bar like Gemini/BuyHatke */
+    .search-container {
+        max-width: 700px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 100;
+    }
+    
     .stTextInput input {
         border-radius: 50px !important;
-        padding: 25px 35px !important;
-        border: 2px solid #6366f1 !important; /* Purple Border */
-        background-color: #1e293b !important;
-        color: white !important;
-        font-size: 20px !important;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
-    }
-
-    /* Comparison Cards */
-    .deal-card {
-        background: #1e293b;
-        color: white;
-        padding: 25px;
-        border-radius: 20px;
-        text-align: center;
-        border: 1px solid #334155;
-        transition: 0.3s;
-        margin-bottom: 20px;
-    }
-    
-    .deal-card:hover {
-        transform: translateY(-10px);
-        border-color: #6366f1;
-    }
-
-    .store-name { font-size: 14px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
-    .price-val { font-size: 28px; font-weight: bold; color: #10b981; margin: 10px 0; } /* Green Price */
-    
-    /* Custom Button */
-    .stButton>button {
-        background: #6366f1 !important;
-        color: white !important;
-        border-radius: 30px !important;
-        padding: 10px 25px !important;
+        padding: 30px 35px !important;
         border: none !important;
-        width: 100%;
-        font-weight: bold;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+        font-size: 18px !important;
     }
 
-    /* Section Headers */
-    h2, h3 { color: #f8fafc !important; text-align: center; }
+    /* Comparison Deal Cards */
+    .deal-card {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        border: 1px solid #eee;
+        margin-top: 20px;
+        transition: 0.3s;
+    }
+    .deal-card:hover { border-color: #2ecc71; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+    .site-name { font-weight: 600; color: #555; margin-bottom: 5px; }
+    .price-green { color: #2ecc71; font-size: 24px; font-weight: 800; } /* Green for Best Price */
+    .price-red { color: #e74c3c; font-size: 24px; font-weight: 800; } /* Red for Other Prices */
+
+    /* Hot Deals Section Header */
+    .section-title {
+        text-align: center;
+        margin-top: 50px;
+        color: #333 !important;
+        font-weight: 700;
+    }
+    
+    /* Buttons */
+    .stButton>button {
+        background-color: #6366f1 !important;
+        border-radius: 25px !important;
+        color: white !important;
+        width: 100%;
+        font-weight: 600;
+        border: none;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# Top Hero Section
+# 1. Top Hero Section
 st.markdown("""
-    <div class="hero-section">
-        <div class="hero-title">✨ Magic Trick for Online Shopping</div>
-        <div class="hero-subtitle">Find Real Deals. Skip the Fake Ones.</div>
+    <div class="hero-banner">
+        <p style="font-size: 14px; letter-spacing: 2px;">✨ MAGIC TRICK FOR ONLINE SHOPPING</p>
+        <h1>Find <span style="color:#2ecc71;">Real Deals</span>, Skip the Fake Ones</h1>
+        <p>Track genuine price drops, compare across stores, and shop smarter every day</p>
     </div>
     """, unsafe_allow_html=True)
 
-# Search Bar Area
+# 2. Centered Search Bar
 col1, col2, col3 = st.columns([1, 4, 1])
 with col2:
-    query = st.text_input("", placeholder="Paste a link or search for products...", label_visibility="collapsed")
+    st.markdown('<div class="search-container">', unsafe_allow_html=True)
+    query = st.text_input("", placeholder="Paste a Flipkart / Myntra link or search product...", label_visibility="collapsed")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 if query:
-    st.markdown(f"### 🔍 Live Comparison for: {query}")
+    st.markdown(f"<h3 style='text-align:center; color:#333; margin-top:30px;'>Top Comparisons for: {query}</h3>", unsafe_allow_html=True)
     
-    # 3x3 Grid like professional sites
+    # 3x3 Grid for all platforms
     stores = [
-        {"name": "Amazon", "price": "₹ Live", "tag": "Trusted", "url": f"https://www.amazon.in/s?k={query}"},
-        {"name": "Flipkart", "price": "₹ Best", "tag": "Popular", "url": f"https://www.flipkart.com/search?q={query}"},
-        {"name": "Meesho", "price": "₹ Low", "tag": "Budget", "url": f"https://www.meesho.com/search?q={query}"},
-        {"name": "Myntra", "price": "₹ Trend", "tag": "Fashion", "url": f"https://www.myntra.com/{query}"},
-        {"name": "Ajio", "price": "₹ Deal", "tag": "Premium", "url": f"https://www.ajio.com/search/?text={query}"},
-        {"name": "Tata CLiQ", "price": "₹ Lux", "tag": "Original", "url": f"https://www.tatacliq.com/search/?text={query}"}
+        {"name": "Meesho", "price": "₹ Best Price", "color": "green", "url": f"https://www.meesho.com/search?q={query}"},
+        {"name": "Amazon", "price": "₹ Check Live", "color": "red", "url": f"https://www.amazon.in/s?k={query}"},
+        {"name": "Flipkart", "price": "₹ View Deal", "color": "red", "url": f"https://www.flipkart.com/search?q={query}"},
+        {"name": "Myntra", "price": "₹ Fashion", "color": "red", "url": f"https://www.myntra.com/{query}"},
+        {"name": "Ajio", "price": "₹ Brand Off", "color": "red", "url": f"https://www.ajio.com/search/?text={query}"},
+        {"name": "Jiomart", "price": "₹ Big Savings", "color": "red", "url": f"https://www.jiomart.com/search/{query}"}
     ]
 
     c = st.columns(3)
@@ -111,30 +111,36 @@ if query:
         with c[i % 3]:
             st.markdown(f"""
                 <div class="deal-card">
-                    <div class="store-name">{store['name']}</div>
-                    <div class="price-val">{store['price']}</div>
-                    <div style="background:#334155; padding:4px 12px; border-radius:15px; font-size:12px; display:inline-block;">{store['tag']}</div>
+                    <p class="site-name">{store['name']}</p>
+                    <p class="price-{store['color']}">{store['price']}</p>
                 </div>
             """, unsafe_allow_html=True)
-            st.link_button(f"Grab Deal", store['url'], use_container_width=True)
+            st.link_button(f"Buy on {store['name']}", store['url'], use_container_width=True)
 
 else:
-    # Home Page Content
-    st.markdown("<br><h2>🔥 Hot Deals Today</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center; color:#94a3b8;'>Powered by Smart Deal Scanner AI</p>", unsafe_allow_html=True)
+    # 3. Hot Deals Section (Landing Page)
+    st.markdown("<h2 class='section-title'>Hot Deals</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; color:#888;'>✨ Powered by Smart Deal Scanner</p>", unsafe_allow_html=True)
     
-    # Showcase some dummy categories
-    cat1, cat2, cat3 = st.columns(3)
-    with cat1: st.markdown('<div class="deal-card"><h4>Mobile Deals</h4><p>Under ₹15,000</p></div>', unsafe_allow_html=True)
-    with cat2: st.markdown('<div class="deal-card"><h4>Fashion Deals</h4><p>Min 60% Off</p></div>', unsafe_allow_html=True)
-    with cat3: st.markdown('<div class="deal-card"><h4>Laptop Deals</h4><p>Extra ₹5000 Off</p></div>', unsafe_allow_html=True)
+    d1, d2 = st.columns(2)
+    with d1:
+        st.markdown("""<div class="deal-card" style="background: linear-gradient(to right, #fdfbfb 0%, #ebedee 100%);">
+            <h4 style="color:#333 !important;">Deals Under</h4>
+            <h2 style="color:#6366f1 !important;">₹499</h2>
+        </div>""", unsafe_allow_html=True)
+    with d2:
+        st.markdown("""<div class="deal-card" style="background: linear-gradient(to right, #fdfbfb 0%, #ebedee 100%);">
+            <h4 style="color:#333 !important;">Deals Under</h4>
+            <h2 style="color:#6366f1 !important;">₹999</h2>
+        </div>""", unsafe_allow_html=True)
 
-# Footer/Image Search Simulation
+# 4. Sidebar for Image Search (Gemini Style)
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/google-lens.png", width=50)
     st.header("📸 Visual Search")
-    img_file = st.file_uploader("Product photo se search karein", type=['jpg', 'png', 'jpeg'])
-    if img_file:
-        st.image(img_file)
-        st.success("AI Analysis active!")
-        
+    st.write("Photo se product dhoondhein")
+    file = st.file_uploader("", type=['jpg','png','jpeg'])
+    if file:
+        st.image(Image.open(file))
+        st.success("AI analyzing image...")
+        st.link_button("Search on Google Lens", "https://images.google.com")
+    
