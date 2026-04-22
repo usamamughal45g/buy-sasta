@@ -1,103 +1,140 @@
 import streamlit as st
 from PIL import Image
 
-st.set_page_config(page_title="Buy Sasta - Real Deals", page_icon="🏷️", layout="wide")
+st.set_page_config(page_title="Buy Sasta - Smart Comparison", page_icon="🛍️", layout="wide")
 
-# BuyHatke Premium Dark Blue & White Theme
+# Custom CSS for BuyHatke Style Design
 st.markdown("""
     <style>
+    /* Main Background and Font */
     .stApp {
-        background-color: #f4f7f6;
+        background-color: #0f172a; /* Dark sleek background */
+        font-family: 'Inter', sans-serif;
     }
-    /* Top Header Section */
-    .header-box {
-        background-color: #1a1a3d;
-        padding: 60px;
-        text-align: center;
-        color: white;
-        border-radius: 0 0 50px 50px;
-        margin-bottom: 30px;
-    }
-    /* Search Bar Gemini Style */
-    .stTextInput input {
-        border-radius: 30px !important;
-        padding: 20px 30px !important;
-        border: none !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-        font-size: 18px !important;
-        max-width: 700px;
-        margin: 0 auto;
-    }
-    /* Product Grid */
-    .product-card {
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        text-align: center;
-        margin-bottom: 20px;
-        border: 1px solid #eee;
-    }
-    .price-green { color: #27ae60; font-size: 24px; font-weight: bold; }
-    .price-red { color: #e74c3c; font-size: 20px; font-weight: bold; }
-    .store-name { font-weight: bold; font-size: 16px; color: #555; }
     
-    /* Buttons */
-    .stButton>button {
-        background-color: #6c5ce7 !important;
-        color: white !important;
-        border-radius: 20px !important;
-        width: 100%;
+    /* Top Banner like BuyHatke */
+    .hero-section {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        padding: 60px 20px;
+        text-align: center;
+        border-radius: 0 0 40px 40px;
+        margin-bottom: 40px;
     }
+    
+    .hero-title {
+        color: #f8fafc;
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+    
+    .hero-subtitle {
+        color: #94a3b8;
+        font-size: 18px;
+    }
+
+    /* BuyHatke Style Search Bar */
+    .stTextInput input {
+        border-radius: 50px !important;
+        padding: 25px 35px !important;
+        border: 2px solid #6366f1 !important; /* Purple Border */
+        background-color: #1e293b !important;
+        color: white !important;
+        font-size: 20px !important;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
+    }
+
+    /* Comparison Cards */
+    .deal-card {
+        background: #1e293b;
+        color: white;
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        border: 1px solid #334155;
+        transition: 0.3s;
+        margin-bottom: 20px;
+    }
+    
+    .deal-card:hover {
+        transform: translateY(-10px);
+        border-color: #6366f1;
+    }
+
+    .store-name { font-size: 14px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+    .price-val { font-size: 28px; font-weight: bold; color: #10b981; margin: 10px 0; } /* Green Price */
+    
+    /* Custom Button */
+    .stButton>button {
+        background: #6366f1 !important;
+        color: white !important;
+        border-radius: 30px !important;
+        padding: 10px 25px !important;
+        border: none !important;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    /* Section Headers */
+    h2, h3 { color: #f8fafc !important; text-align: center; }
     </style>
     """, unsafe_allow_html=True)
 
-# Main UI like BuyHatke
+# Top Hero Section
 st.markdown("""
-    <div class="header-box">
-        <h1 style='color: white;'>✨ Magic Trick for Online Shopping</h1>
-        <p style='color: #ddd;'>Find Real Deals. Skip the Fake Ones.</p>
+    <div class="hero-section">
+        <div class="hero-title">✨ Magic Trick for Online Shopping</div>
+        <div class="hero-subtitle">Find Real Deals. Skip the Fake Ones.</div>
     </div>
     """, unsafe_allow_html=True)
 
-# Tabs for Text and Image
-tab1, tab2 = st.tabs(["🔍 Search Product", "📷 Image Search"])
+# Search Bar Area
+col1, col2, col3 = st.columns([1, 4, 1])
+with col2:
+    query = st.text_input("", placeholder="Paste a link or search for products...", label_visibility="collapsed")
 
-with tab1:
-    query = st.text_input("", placeholder="Paste a link or search product...", label_visibility="collapsed")
+if query:
+    st.markdown(f"### 🔍 Live Comparison for: {query}")
     
-    if query:
-        st.markdown(f"<h3 style='color:#333;'>Comparing Prices for: {query}</h3>", unsafe_allow_html=True)
+    # 3x3 Grid like professional sites
+    stores = [
+        {"name": "Amazon", "price": "₹ Live", "tag": "Trusted", "url": f"https://www.amazon.in/s?k={query}"},
+        {"name": "Flipkart", "price": "₹ Best", "tag": "Popular", "url": f"https://www.flipkart.com/search?q={query}"},
+        {"name": "Meesho", "price": "₹ Low", "tag": "Budget", "url": f"https://www.meesho.com/search?q={query}"},
+        {"name": "Myntra", "price": "₹ Trend", "tag": "Fashion", "url": f"https://www.myntra.com/{query}"},
+        {"name": "Ajio", "price": "₹ Deal", "tag": "Premium", "url": f"https://www.ajio.com/search/?text={query}"},
+        {"name": "Tata CLiQ", "price": "₹ Lux", "tag": "Original", "url": f"https://www.tatacliq.com/search/?text={query}"}
+    ]
+
+    c = st.columns(3)
+    for i, store in enumerate(stores):
+        with c[i % 3]:
+            st.markdown(f"""
+                <div class="deal-card">
+                    <div class="store-name">{store['name']}</div>
+                    <div class="price-val">{store['price']}</div>
+                    <div style="background:#334155; padding:4px 12px; border-radius:15px; font-size:12px; display:inline-block;">{store['tag']}</div>
+                </div>
+            """, unsafe_allow_html=True)
+            st.link_button(f"Grab Deal", store['url'], use_container_width=True)
+
+else:
+    # Home Page Content
+    st.markdown("<br><h2>🔥 Hot Deals Today</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; color:#94a3b8;'>Powered by Smart Deal Scanner AI</p>", unsafe_allow_html=True)
+    
+    # Showcase some dummy categories
+    cat1, cat2, cat3 = st.columns(3)
+    with cat1: st.markdown('<div class="deal-card"><h4>Mobile Deals</h4><p>Under ₹15,000</p></div>', unsafe_allow_html=True)
+    with cat2: st.markdown('<div class="deal-card"><h4>Fashion Deals</h4><p>Min 60% Off</p></div>', unsafe_allow_html=True)
+    with cat3: st.markdown('<div class="deal-card"><h4>Laptop Deals</h4><p>Extra ₹5000 Off</p></div>', unsafe_allow_html=True)
+
+# Footer/Image Search Simulation
+with st.sidebar:
+    st.image("https://img.icons8.com/fluency/96/google-lens.png", width=50)
+    st.header("📸 Visual Search")
+    img_file = st.file_uploader("Product photo se search karein", type=['jpg', 'png', 'jpeg'])
+    if img_file:
+        st.image(img_file)
+        st.success("AI Analysis active!")
         
-        # Creating a 3-column Grid for all sites
-        sites = [
-            {"name": "Meesho", "price": "₹499", "status": "Cheapest", "color": "green", "url": f"https://www.meesho.com/search?q={query}"},
-            {"name": "Flipkart", "price": "₹849", "status": "Popular", "color": "red", "url": f"https://www.flipkart.com/search?q={query}"},
-            {"name": "Amazon", "price": "₹899", "status": "Prime", "color": "red", "url": f"https://www.amazon.in/s?k={query}"},
-            {"name": "Myntra", "price": "₹1,200", "status": "Fashion", "color": "red", "url": f"https://www.myntra.com/{query}"},
-            {"name": "Ajio", "price": "₹1,150", "status": "Brands", "color": "red", "url": f"https://www.ajio.com/search/?text={query}"},
-            {"name": "Jiomart", "price": "₹799", "status": "Savings", "color": "red", "url": f"https://www.jiomart.com/search/{query}"}
-        ]
-        
-        cols = st.columns(3)
-        for i, site in enumerate(sites):
-            with cols[i % 3]:
-                st.markdown(f"""
-                    <div class="product-card">
-                        <p class="store-name">{site['name']}</p>
-                        <p class="price-{site['color']}">{site['price']}</p>
-                        <span style="background:#eee; padding:2px 8px; border-radius:10px; font-size:12px;">{site['status']}</span>
-                    </div>
-                """, unsafe_allow_html=True)
-                st.link_button(f"Go to {site['name']}", site['url'])
-
-with tab2:
-    st.markdown("<h3 style='color:#333; text-align:center;'>📸 Photo Se Sasta Dhoondhein</h3>", unsafe_allow_html=True)
-    file = st.file_uploader("Product ki photo upload karein", type=["jpg", "png", "jpeg"])
-    if file:
-        st.image(Image.open(file), width=300)
-        st.info("AI Analysis: Hum is photo ke similar products dhoond rahe hain...")
-        st.link_button("Search on Google Lens", "https://images.google.com")
-
-st.markdown("<br><hr><p style='text-align:center; color:#888;'>Powered by Buy Sasta AI</p>", unsafe_allow_html=True)
-
