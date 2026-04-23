@@ -2,90 +2,109 @@ import streamlit as st
 from PIL import Image
 
 # Page Setup
-st.set_page_config(page_title="Buy Sasta - Square Search Edition", page_icon="🛍️", layout="wide")
+st.set_page_config(page_title="Buy Sasta - Pro Square UI", page_icon="🛍️", layout="wide")
 
-# Custom CSS for SQUARE Search Bar & Clean UI
+# Custom CSS for a Clean, Highlighted Square Inbox
 st.markdown("""
     <style>
-    /* Main Background */
+    /* Background and global font */
     .stApp { background-color: #ffffff; }
 
-    /* Top Banner Section */
+    /* Modern Banner */
     .hero-banner {
-        background: linear-gradient(135deg, #1a1a3d 0%, #000000 100%);
-        padding: 110px 20px 100px 20px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        padding: 100px 20px 110px 20px;
         text-align: center;
         color: white;
-        border-radius: 0; /* Header bhi square rakha hai matching ke liye */
+        border-radius: 0;
         position: relative;
     }
     
-    .hero-banner h1 { font-size: 45px; font-weight: 800; color: white !important; }
+    .hero-banner h1 { font-size: 48px; font-weight: 900; color: white !important; letter-spacing: -1px; }
 
-    /* SQUARE Search Box Container */
+    /* SEARCH BOX FIX: Preventing 'kata-kata' look */
     .search-box-container {
-        max-width: 850px;
-        margin: -40px auto 50px auto; 
+        max-width: 800px;
+        margin: -55px auto 60px auto; 
         position: relative;
-        z-index: 9999;
-        padding: 0 20px;
+        z-index: 9999 !important;
+        padding: 10px;
+        overflow: visible !important; /* Force visibility */
     }
     
-    /* THE FIX: Removing border-radius for SQUARE shape */
+    /* Targeting every layer to ensure Sharp Square edges */
     div[data-baseweb="input"], 
     div[data-baseweb="input"] > div, 
     input {
-        border-radius: 0px !important; /* Sharp Square Corners */
+        border-radius: 0px !important; /* Sharp corners */
     }
 
+    /* Highlighted Inbox Styling */
     .stTextInput > div > div > input {
         border-radius: 0px !important; 
-        padding: 30px 25px !important;
-        border: 4px solid #ff0000 !important; /* Sharp Red Border */
-        box-shadow: 10px 10px 0px rgba(255, 0, 0, 0.2) !important; /* Retro Square Shadow */
-        font-size: 20px !important;
+        padding: 35px 30px !important;
+        border: 4px solid #ff4b2b !important; /* Bold Red Border */
         background-color: white !important;
-        color: black !important;
-        height: 70px !important;
+        color: #1a1a3d !important;
+        font-size: 22px !important;
+        height: 80px !important;
+        /* Neon Red Glow Effect */
+        box-shadow: 0 0 20px rgba(255, 75, 43, 0.4) !important;
+        transition: all 0.4s ease;
     }
 
-    /* Card Styling */
+    /* Focus Highlight: Jab user likhna shuru kare */
+    .stTextInput > div > div > input:focus {
+        box-shadow: 0 0 40px rgba(255, 75, 43, 0.7) !important;
+        border-color: #ff0000 !important;
+        transform: translateY(-2px);
+    }
+
+    /* Result Cards */
     .deal-card {
-        background: #ffffff;
-        padding: 25px;
-        border-radius: 0px; /* Cards also square */
+        background: #f8fafc;
+        padding: 30px;
+        border-radius: 0px;
         text-align: center;
-        border: 2px solid #f0f0f0;
+        border: 1px solid #e2e8f0;
         margin-bottom: 20px;
+        transition: 0.3s;
     }
-    .price-green { color: #2ecc71; font-size: 24px; font-weight: bold; }
+    .deal-card:hover {
+        border-color: #ff4b2b;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+    .price-tag { color: #10b981; font-size: 24px; font-weight: bold; }
 
-    /* Clean UI */
+    /* Removing Streamlit's default clutter */
     #MainMenu, footer, header {visibility: hidden;}
+    .stDeployButton {display:none;}
     </style>
     """, unsafe_allow_html=True)
 
 # 1. Hero Section
 st.markdown("""
     <div class="hero-banner">
-        <h1 style="color:white !important;">Buy Sasta AI</h1>
-        <p style="color:#2ecc71 !important; font-weight:bold;">SQUARE SEARCH ACTIVE</p>
+        <p style="color: #ff4b2b; font-weight: bold; letter-spacing: 2px;">SMART COMPARISON ENGINE</p>
+        <h1>Buy Sasta <span style="color:#ff4b2b;">AI</span></h1>
+        <p style="opacity: 0.8;">No Clutter. Just the Lowest Prices.</p>
     </div>
     """, unsafe_allow_html=True)
 
-# 2. Sharp Square Search Bar
+# 2. Highlighted Square Search Bar
 st.markdown('<div class="search-box-container">', unsafe_allow_html=True)
-query = st.text_input("", placeholder="🔍 Search product here (Sharp Square)...", label_visibility="collapsed")
+query = st.text_input("", placeholder="🔍 Paste link or search items...", label_visibility="collapsed")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# 3. Results Logic
+# 3. Results Section
 if query:
-    st.markdown(f"<h3 style='text-align:center; color:#1a1a3d;'>Results for '{query}'</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align:center; color:#0f172a;'>Top Deals for '{query}'</h3>", unsafe_allow_html=True)
     
+    # Store List
     stores = [
-        {"name": "Meesho", "url": f"https://www.meesho.com/search?q={query}"},
-        {"name": "Amazon", "url": f"https://www.amazon.in/s?k={query}"},
-        {"name": "Flipkart", "url": f"https://www.flipkart.com/search?q={query}"}
+        {"name": "Meesho", "badge": "Lowest", "url": f"https://www.meesho.com/search?q={query}"},
+        {"name": "Amazon", "badge": "Prime", "url": f"https://www.amazon.in/s?k={query}"},
+        {"name": "Flipkart", "badge": "Plus", "url": f"https://www.flipkart.com/search?q={query}"}
     ]
 
     cols = st.columns(3)
@@ -93,11 +112,12 @@ if query:
         with cols[i % 3]:
             st.markdown(f"""
                 <div class="deal-card">
-                    <p style="font-weight:bold;">{store['name']}</p>
-                    <p class="price-green">Live Deal</p>
+                    <p style="color:#64748b; font-size:12px; text-transform:uppercase;">{store['name']}</p>
+                    <p class="price-tag">Check Live</p>
+                    <span style="background:#fee2e2; color:#ef4444; padding:3px 12px; font-size:11px; font-weight:bold;">{store['badge']}</span>
                 </div>
             """, unsafe_allow_html=True)
-            st.link_button(f"Open {store['name']}", store['url'], use_container_width=True)
+            st.link_button(f"Shop on {store['name']}", store['url'], use_container_width=True)
 else:
-    st.markdown("<br><br><p style='text-align:center; color:#ccc;'>Type your product name above...</p>", unsafe_allow_html=True)
+    st.markdown("<br><br><p style='text-align:center; color:#94a3b8; font-size:18px;'>Enter a product name to see the magic...</p>", unsafe_allow_html=True)
     
